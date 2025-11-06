@@ -916,7 +916,7 @@ window.openShortcutsHelp = () => {
     window.keyboard.detach();
     new Modal({
         type: "custom",
-        title: `Available Keyboard Shortcuts <i>(v${electron.remote.app.getVersion()})</i>`,
+        title: `Available Keyboard Shortcuts <i>(v${remote.app.getVersion()})</i>`,
         html: `<h5>Using either the on-screen or a physical keyboard, you can use the following shortcuts:</h5>
                 <details open id="shortcutsHelpAccordeon1">
                     <summary>Emulator shortcuts</summary>
@@ -1032,7 +1032,7 @@ window.useAppShortcut = action => {
             window.keyboard.togglePasswordMode();
             return true;
         case "DEV_DEBUG":
-            electron.remote.getCurrentWindow().webContents.toggleDevTools();
+            remote.getCurrentWindow().webContents.toggleDevTools();
             return true;
         case "DEV_RELOAD":
             window.location.reload(true);
@@ -1044,7 +1044,7 @@ window.useAppShortcut = action => {
 };
 
 // Global keyboard shortcuts
-const globalShortcut = electron.remote.globalShortcut;
+const globalShortcut = remote.globalShortcut;
 globalShortcut.unregisterAll();
 
 window.registerKeyboardShortcuts = () => {
@@ -1106,7 +1106,7 @@ document.addEventListener("keydown", e => {
 // Fix #265
 window.addEventListener("keyup", e => {
     if (require("os").platform() === "win32" && e.key === "F4" && e.altKey === true) {
-        electron.remote.app.quit();
+        remote.app.quit();
     }
 });
 
@@ -1124,12 +1124,12 @@ window.onresize = () => {
 
 // See #413
 window.resizeTimeout = null;
-let electronWin = electron.remote.getCurrentWindow();
+let electronWin = remote.getCurrentWindow();
 electronWin.on("resize", () => {
     if (settings.keepGeometry === false) return;
     clearTimeout(window.resizeTimeout);
     window.resizeTimeout = setTimeout(() => {
-        let win = electron.remote.getCurrentWindow();
+        let win = remote.getCurrentWindow();
         if (win.isFullScreen()) return false;
         if (win.isMaximized()) {
             win.unmaximize();
@@ -1148,5 +1148,5 @@ electronWin.on("resize", () => {
 });
 
 electronWin.on("leave-full-screen", () => {
-    electron.remote.getCurrentWindow().setSize(960, 540);
+    remote.getCurrentWindow().setSize(960, 540);
 });
