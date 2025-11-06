@@ -59,7 +59,7 @@ if (remote.process.argv.includes("--nointro")) {
 } else {
     window.settings.nointroOverride = false;
 }
-if (electron.remote.process.argv.includes("--nocursor")) {
+if (remote.process.argv.includes("--nocursor")) {
     window.settings.nocursorOverride = true;
 } else {
     window.settings.nocursorOverride = false;
@@ -204,7 +204,7 @@ function initSystemInformationProxy() {
 window.audioManager = new AudioManager();
 
 // See #223
-electron.remote.app.focus();
+remote.app.focus();
 
 let i = 0;
 if (window.settings.nointro || window.settings.nointroOverride) {
@@ -243,7 +243,7 @@ function displayLine() {
 
     switch(true) {
         case i === 2:
-            bootScreen.innerHTML += `eDEX-UI Kernel version ${electron.remote.app.getVersion()} boot at ${Date().toString()}; root:xnu-1699.22.73~1/RELEASE_X86_64`;
+            bootScreen.innerHTML += `eDEX-UI Kernel version ${remote.app.getVersion()} boot at ${Date().toString()}; root:xnu-1699.22.73~1/RELEASE_X86_64`;
         case i === 4:
             setTimeout(displayLine, 500);
             break;
@@ -487,7 +487,7 @@ async function initUI() {
     window.onmouseup = e => {
         if (window.keyboard.linkedToTerm) window.term[window.currentTerm].term.focus();
     };
-    window.term[0].term.writeln("\033[1m"+`Welcome to eDEX-UI v${electron.remote.app.getVersion()} - Electron v${process.versions.electron}`+"\033[0m");
+    window.term[0].term.writeln("\033[1m"+`Welcome to eDEX-UI v${remote.app.getVersion()} - Electron v${process.versions.electron}`+"\033[0m");
 
     await _delay(100);
 
@@ -603,7 +603,7 @@ window.openSettings = async () => {
         if (th === window.settings.theme) return;
         themes += `<option>${th}</option>`;
     });
-    for (let i = 0; i < electron.remote.screen.getAllDisplays().length; i++) {
+    for (let i = 0; i < remote.screen.getAllDisplays().length; i++) {
         if (i !== window.settings.monitor) monitors += `<option>${i}</option>`;
     }
     let nets = await window.si.networkInterfaces();
@@ -616,7 +616,7 @@ window.openSettings = async () => {
 
     new Modal({
         type: "custom",
-        title: `Settings <i>(v${electron.remote.app.getVersion()})</i>`,
+        title: `Settings <i>(v${remote.app.getVersion()})</i>`,
         html: `<table id="settingsEditor">
                     <tr>
                         <th>Key</th>
@@ -802,7 +802,7 @@ window.openSettings = async () => {
             {label: "Open in External Editor", action:`electron.shell.openPath('${settingsFile}');electronWin.minimize();`},
             {label: "Save to Disk", action: "window.writeSettingsFile()"},
             {label: "Reload UI", action: "window.location.reload(true);"},
-            {label: "Restart eDEX", action: "electron.remote.app.relaunch();electron.remote.app.quit();"}
+            {label: "Restart eDEX", action: "remote.app.relaunch();remote.app.quit();"}
         ]
     }, () => {
         // Link the keyboard back to the terminal
